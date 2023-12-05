@@ -28,16 +28,3 @@ namespace HumanRegisterWebApi.Services.Adapters
         }
     }
 }
-/*
- 
-         public Car Bind(AddCarDto dto)
-        {
-            return new Car()
-            {
-                Color = dto.Color,
-                Brand = dto.Brand,
-                Model = dto.Model,
-                ReleaseYear = dto.ReleaseYear                     
-            };
-        }
- */

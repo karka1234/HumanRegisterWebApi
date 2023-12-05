@@ -12,7 +12,6 @@ namespace HumanRegisterWebApi.Services.Data
         {
             _context = context;
         }
-
         public async Task<bool> UpdateDataBase()
         {
             int affectedRows = await _context.SaveChangesAsync();
@@ -36,7 +35,6 @@ namespace HumanRegisterWebApi.Services.Data
             }
         }
 
-
         public async Task<User> GetUserById(Guid id)
         {
             var user = await _context.Users
@@ -47,7 +45,6 @@ namespace HumanRegisterWebApi.Services.Data
                 .FirstOrDefaultAsync(u => u.Id == id);
             return user;
         }
-
         public async Task<User> GetUserByUserName(string userName)
         {
             var user = await _context.Users
@@ -58,13 +55,10 @@ namespace HumanRegisterWebApi.Services.Data
                 .FirstOrDefaultAsync(u => u.UserName == userName);
             return user;
         }
-
         public async Task DeleteUserInfo(User userToDelete)//del to nes username tik controleri gaunu
         {
             _context.Users.Remove(userToDelete);
         }
-
-
         private void UpsertUserInfo(User currentUser, UserInfo newUserInfo)
         {
             if (currentUser.UserInfo == null)
@@ -80,8 +74,6 @@ namespace HumanRegisterWebApi.Services.Data
                 currentUser.UserInfo.PhoneNumber = newUserInfo.PhoneNumber;
             }
         }
-
-
         private void UpsertUserAddress(User currentUser, UserAddress newUserAddress)
         {
             if (currentUser.UserInfo.UserAddress == null)
@@ -96,19 +88,5 @@ namespace HumanRegisterWebApi.Services.Data
                 currentUser.UserInfo.UserAddress.ApartamentNumber = newUserAddress.ApartamentNumber;
             }
         }
-
-
-
-        /*
-                    currentUser.UserInfo.SecName = newUserInfo.SecName;
-            currentUser.UserInfo.PersonCode = newUserInfo.PersonCode;
-            currentUser.UserInfo.Email = newUserInfo.Email;
-            currentUser.UserInfo.PhoneNumber = newUserInfo.PhoneNumber;
-                        currentUser.UserInfo.UserAddress.City = newUserAddress.City;
-                currentUser.UserInfo.UserAddress.Street = newUserAddress.Street;
-                currentUser.UserInfo.UserAddress.HouseNmber = newUserAddress.HouseNmber;
-                currentUser.UserInfo.UserAddress.ApartamentNumber = newUserAddress.ApartamentNumber;
-        */
-
     }
 }

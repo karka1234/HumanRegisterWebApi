@@ -1,7 +1,6 @@
 ﻿using HumanRegisterWebApi.Database;
 using HumanRegisterWebApi.DTO;
 using HumanRegisterWebApi.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using static HumanRegisterWebApi.Enums.Enums;
@@ -23,11 +22,9 @@ namespace HumanRegisterWebApi.Services
             var user = CreateUser(userName, password);
             _context.Users.Add(user);
             _context.SaveChanges();
+            _context.Dispose();
             return user;
         }
-
-
-
         public LoginResponseDTO Login(string userName, string password)
         {
             var user = _context.Users.SingleOrDefault(u => u.UserName == userName);
@@ -36,7 +33,6 @@ namespace HumanRegisterWebApi.Services
             var isSuccess = VerifyPasswordHash(password, user.Password, user.PasswordSalt);
             return new LoginResponseDTO(isSuccess, user.AppRole);
         }
-
         public User CreateUser(string userName, string password)
         {
             CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -48,9 +44,6 @@ namespace HumanRegisterWebApi.Services
                 AppRole = Role.User
             };
         }
-
-
-
         private bool CheckUserNameExist(string userName)
         {
             return GetUserByUserName(userName) == null;
@@ -59,14 +52,12 @@ namespace HumanRegisterWebApi.Services
         {
             return _context.Users.FirstOrDefault(u => u.UserName == userName);
         }
-
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA256();
             passwordSalt = hmac.Key;
             passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
-
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using var hmac = new HMACSHA256(passwordSalt);

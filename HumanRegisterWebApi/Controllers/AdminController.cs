@@ -1,5 +1,4 @@
-﻿using HumanRegisterWebApi.Models;
-using HumanRegisterWebApi.Services;
+﻿using HumanRegisterWebApi.Services;
 using HumanRegisterWebApi.Services.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -26,15 +25,15 @@ namespace HumanRegisterWebApi.Controllers
         [HttpDelete("DeleteUser/{id}")]
         public async Task<IActionResult> GetCurentUserInfo([FromRoute] Guid id)
         {
-            bool idExists =  _adminService.CheckUserIdExists(id).Result;
+            bool idExists = _adminService.CheckUserIdExists(id).Result;
             if (!idExists)
                 return LogWarningNotFound($"{id} not found");
 
             string currentUserName = User.FindFirst(ClaimTypes.Name)?.Value;
-            bool yourAccount =  _adminService.CheckCurrentUserWithGivenUserId(currentUserName, id).Result;
+            bool yourAccount = _adminService.CheckCurrentUserWithGivenUserId(currentUserName, id).Result;
             if (yourAccount)
                 return LogWarningBadRequest("You cannot delete your account");
-            
+
             bool success = await _adminService.DeleteUserInfo(id);
             if (!success)
                 LogWarningBadRequest("Delete was not succesfull");
