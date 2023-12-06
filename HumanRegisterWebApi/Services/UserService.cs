@@ -58,7 +58,7 @@ namespace HumanRegisterWebApi.Services
         public async Task<IActionResult> RegisterUserInfoAndUserAddress(string currentUserName, GetUpsertNoImageDTO requestUserData)
         {
             bool registered = await IsUserFullyRegistered(currentUserName);
-            if (!registered)
+            if (registered)
                 return LogWarningBadRequest("Already fully registered, you only can change fields one by one");
             User tempUser = _userDataAdapter.Bind(requestUserData);
             bool success = await UpsertUserInfoUserAddress(currentUserName, tempUser.UserInfo, tempUser.UserInfo.UserAddress);
@@ -75,9 +75,8 @@ namespace HumanRegisterWebApi.Services
         }
         public async Task<IActionResult> GetUserInformationDto(string currentUserName)//isorinis
         {
-            UserInfo currentUserInfo = await GetCurentUserInfo(currentUserName);
-            GetUpsertDTO userDto = _userDataAdapter.Bind(currentUserInfo, currentUserInfo.UserAddress, currentUserInfo.ProfileImage);
-            IActionResult nullCheckResult = CheckForNullValuesDTO(currentUserInfo, userDto);
+            UserInfo currentUserInfo = await GetCurentUserInfo(currentUserName);            
+            IActionResult nullCheckResult = CheckForNullValuesDTO(currentUserInfo);
             return nullCheckResult;
         }
 
@@ -125,13 +124,10 @@ namespace HumanRegisterWebApi.Services
         {
             if (request is string str && str.IsNullOrEmpty())
                 return true;
-
             if (request is int intValue && (intValue == 0 || intValue < 0))
                 return true;
-
             if (request is long longValue && (longValue == 0 || longValue < 0))
                 return true;
-
             return false;
         }
 
@@ -150,7 +146,7 @@ namespace HumanRegisterWebApi.Services
             _logger.LogWarning(text);
             return new BadRequestObjectResult(text);
         }
-        private IActionResult CheckForNullValuesDTO(UserInfo currentUserInfo, GetUpsertDTO userDto)//nes nori ugrazinti kokiu lauku truksta jei kazkur erroras
+        private IActionResult CheckForNullValuesDTO(UserInfo currentUserInfo)//nes nori ugrazinti kokiu lauku truksta jei kazkur erroras
         {
             if (currentUserInfo == null)
                 return LogWarningNotFound("UserInfo not exist");
@@ -158,6 +154,8 @@ namespace HumanRegisterWebApi.Services
                 return LogWarningNotFound("UserAddress not exist");
             if (currentUserInfo.ProfileImage == null)
                 return LogWarningNotFound("ProfileImage not exist");
+
+            GetUpsertDTO userDto = _userDataAdapter.Bind(currentUserInfo, currentUserInfo.UserAddress, currentUserInfo.ProfileImage);
             return LogInformationOk("Output user info DTO", userDto);
         }
 
