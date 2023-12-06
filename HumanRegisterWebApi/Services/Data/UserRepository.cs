@@ -15,8 +15,7 @@ namespace HumanRegisterWebApi.Services.Data
         public async Task<bool> UpdateDataBase()
         {
             int affectedRows = await _context.SaveChangesAsync();
-            _context.Dispose();
-            return affectedRows > 0;///kazka padara db tai traktuojam kad viskas ok 
+            return affectedRows > 0;
         }
         public void UpsertUserData(User currentUser, UserInfo newUserInfo, UserAddress newUserAddress)
         {

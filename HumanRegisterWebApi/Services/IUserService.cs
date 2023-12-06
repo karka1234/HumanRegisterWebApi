@@ -7,7 +7,7 @@ namespace HumanRegisterWebApi.Services
 {
     public interface IUserService
     {
-        Task<IActionResult> RegisterOrUpdateProfileImage(string currentUserName, ImageUploadRequest requestImage);
+        Task<IActionResult> RegisterProfileImage(string currentUserName, ImageUploadRequest requestImage);
         Task<IActionResult> RegisterUserInfoAndUserAddress(string currentUserName, GetUpsertNoImageDTO requestUserData);
         Task<bool> ChangeFieldSeperatlyUserAddress(UserAddress currentUserAdress, string propertyName, object request);
         Task<bool> ChangeFieldSeperatlyUserInfo(UserInfo currentUserInfo, string propertyName, object request);

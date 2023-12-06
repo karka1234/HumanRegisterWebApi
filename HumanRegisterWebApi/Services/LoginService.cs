@@ -7,7 +7,7 @@ using static HumanRegisterWebApi.Enums.Enums;
 
 namespace HumanRegisterWebApi.Services
 {
-    public class LoginService : ILoginService
+    public class LoginService : ILoginService///butina async
     //atkirai viskas nuo main programos funkcionalumo 
     {
         private readonly AppDbContext _context;

@@ -66,13 +66,15 @@ namespace HumanRegisterWebApi.Services
                 return LogInformationOk("New user data was added", requestUserData);
             return LogWarningBadRequest("Database not updated");
         }
-        public async Task<IActionResult> RegisterOrUpdateProfileImage(string currentUserName, ImageUploadRequest requestImage)
+
+        public async Task<IActionResult> RegisterProfileImage(string currentUserName, ImageUploadRequest requestImage)
         {
             bool success = await UpsertProfileImage(currentUserName, requestImage.Image);
             if (success)
                 return LogInformationOk("New user data was added", requestImage);
             return LogWarningBadRequest("Database not updated");
         }
+
         public async Task<IActionResult> GetUserInformationDto(string currentUserName)//isorinis
         {
             UserInfo currentUserInfo = await GetCurentUserInfo(currentUserName);            
