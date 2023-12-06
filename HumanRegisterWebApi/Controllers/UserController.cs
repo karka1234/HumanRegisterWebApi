@@ -17,12 +17,10 @@ namespace HumanRegisterWebApi.Controllers
                                                 //pasidomet apie dispose. garbage collector............................
     {
         private readonly IUserService _service;
-
         public UserController(IUserService service)
         {
             _service = service;
         }
-
         [HttpGet("GetUserInformationDto")]
         public async Task<IActionResult> GetUserInformationDto()
         {
@@ -101,8 +99,6 @@ namespace HumanRegisterWebApi.Controllers
         {
             string currentUserName = User.FindFirst(ClaimTypes.Name)?.Value;
             return await _service.UpdateField<int>("ApartamentNumber", currentUserName, request);
-
-
         }
     }
 }
