@@ -28,3 +28,5 @@ Authentication and Authorization is done with Json Web Tokens.
 Sql server database is used.
 
 Entity Framework is used.
+
+![image](https://github.com/karka1234/HumanRegisterWebApi/assets/5184302/b5094178-02d1-49b4-a3e5-e366c6e9fd8a)
